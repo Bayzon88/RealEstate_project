@@ -1,0 +1,13 @@
+.login {
+  justify-content: space-between;
+  display: flex;
+  position: relative;
+  &__loginForm {
+    min-width: 300px;
+    &--btnLogin {
+      --bs-btn-color: white;
+
+      //TODO: Add styling based on figma design
+    }
+  }
+}
