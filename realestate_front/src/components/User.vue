@@ -8,7 +8,7 @@
     />
     <div class="card-body">
       <h5 class="card-title">Alvaro Beltran</h5>
-      <p class="card-text">Full Stack Web Develop | MERN | Vue.js | Asp.NET</p>
+      <p class="card-text">Full Stack Web Developer MERN | Vue.js | Asp.NET</p>
     </div>
   </div>
 </template>

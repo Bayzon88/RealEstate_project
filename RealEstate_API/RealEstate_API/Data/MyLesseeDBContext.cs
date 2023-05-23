@@ -19,12 +19,10 @@ namespace RealEstate_API.Data
         // Properties are used to access tables
 
         public DbSet<Account> Accounts { get; set; }
-        //public DbSet<Address> Addresses{ get; set; }
-        //        public DbSet<Notification> Notifications { get; set; }
+       
         public DbSet<Listing> Listings { get; set; }
         public DbSet<Users> Users { get; set; }
 
-        //        public DbSet<Message> Messages { get; set; }
         public DbSet<HouseType> HouseTypes { get; set; }
 
 

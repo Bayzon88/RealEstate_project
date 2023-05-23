@@ -1,6 +1,6 @@
 <template>
   <div class="container d-flex justify-content-between">
-    <div class="my-5 mx-auto p-0 login__loginForm">
+    <div class="my-2 mx-auto p-0 login__loginForm">
       <img src="../assets/Logo_small.png" class="mb-5" />
       <form class="container" @submit.prevent="login">
         <div class="mb-3">
@@ -44,8 +44,15 @@
         >
           Sign Up
         </button>
+        <button
+          type="submit"
+          class="btn btn-primary login__loginForm--btnLogin w-100 my-2"
+          @click="createAdmin"
+        >
+          Create Admin
+        </button>
       </form>
-      <div class="container my-5">
+      <div class="container my-2">
         <p class="fw-medium text-dark">Already Registered?</p>
         <router-link to="/login">
           <button type="submit" class="btn btn-secondary w-100" @click="this.$props.setLogin">
@@ -90,6 +97,30 @@ export default {
             email: this.email,
             phone: this.phone,
             gender: this.gender,
+          },
+          {
+            withCredentials: true,
+          }
+        );
+        this.$props.setLogin();
+        console.log(result);
+      } catch (err) {
+        console.log("There is an error");
+        console.log(err);
+      }
+    },
+    async createAdmin() {
+      try {
+        //Bypass Login for showing purposes
+        //TODO: Remove in production
+        let result = await axios.post(
+          "https://localhost:7046/api/account/signup",
+          {
+            username: "admin",
+            password: "Admin1234",
+            email: "admin@admin.com",
+            phone: "1234",
+            gender: "admin",
           },
           {
             withCredentials: true,
