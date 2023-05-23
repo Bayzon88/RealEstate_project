@@ -66,7 +66,7 @@ export default {
         let result = await axios.post(
           "https://localhost:7046/api/account/login",
           {
-            username: "string2",
+            username: "string",
             password: "Stringst",
             returnUrl: "string",
             rememberMe: true,
