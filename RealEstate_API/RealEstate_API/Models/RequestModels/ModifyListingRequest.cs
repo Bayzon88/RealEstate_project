@@ -1,19 +1,11 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace RealEstate_API.Models
+namespace RealEstate_API.Models.RequestModels
 {
-    public class Listing
+    public class ModifyListingRequest
     {
         // properties
-    
-        public int ListingId { get; set; }
-
-        public int LandlordId { get; set; } = 1;
-
-        [Required(ErrorMessage = "Please enter house type.")]
-        public int HouseTypeId { get; set; }
-        public HouseType? HouseType { get; set; }
-
+             
         [Required(ErrorMessage = "Please enter the address.")]
         public string Address { get; set; }
 
@@ -34,10 +26,6 @@ namespace RealEstate_API.Models
         [Required(ErrorMessage = "Please enter the rental price.")]
         public double RentalPrice { get; set; }
 
-        public DateTime ListingTime { get; set; } = DateTime.Now;
 
-        public int ValidDays { get; set; } = 30;
-
-        public bool Status { get; set; } = true;
     }
 }

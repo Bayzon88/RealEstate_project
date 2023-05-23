@@ -8,6 +8,8 @@ using RealEstate_API.Migrations;
 using RealEstate_API.Models;
 using RealEstate_API.Models.Identity;
 using RealEstate_API.Models.RequestModels;
+using System.ComponentModel.DataAnnotations;
+using System.Linq;
 
 namespace RealEstate_API.Controllers
 {
@@ -35,17 +37,17 @@ namespace RealEstate_API.Controllers
             var username = token.Issuer;
 
             if (username == null) return BadRequest("User must be authenticated");
+
             //Show all Listings
-            
             return Ok(await myLesseeDBContext.Listings.ToListAsync());
         }
 
         [HttpGet]
         [Route("{id:int}")]
-   
+
         public async Task<IActionResult> ListingDetails([FromRoute] int id)
         {
-            //Get information of Listing
+            //Find specific listing and return for Details Page 
             var listing = myLesseeDBContext.Listings.Find(id);
             return Ok(listing);
         }
@@ -55,15 +57,9 @@ namespace RealEstate_API.Controllers
         {
             if (ModelState.IsValid)
             {
-                //No need to check if other listing has the same information
-
-                var listingsCount = myLesseeDBContext.Listings.ToList().Count;
-
-
-
                 var listing = new Listing()
                 {
-                    ListingId = listingsCount + 1,
+
                     HouseType = addListingRequest.HouseType,
                     Address = addListingRequest.Address,
                     BedroomNo = addListingRequest.BedroomNo,
@@ -86,6 +82,46 @@ namespace RealEstate_API.Controllers
             }
         }
 
+
+        [HttpPut]
+        [Route("{id:int}")]
+        public async Task<IActionResult> ModifyListing([FromRoute] int id, ModifyListingRequest modifyListingRequest)
+        {
+            //Modify Listing information
+
+            Listing listing = await myLesseeDBContext.Listings.FindAsync(id);
+
+
+            Listing updatedListing = listing;
+
+            //Update Information
+            updatedListing.Address = modifyListingRequest.Address;
+            updatedListing.TotalArea = modifyListingRequest.TotalArea;
+            updatedListing.BedroomNo = modifyListingRequest.BedroomNo;
+            updatedListing.WashroomNo = modifyListingRequest.WashroomNo;
+            updatedListing.ParkingNo = modifyListingRequest.ParkingNo;
+            updatedListing.Description = modifyListingRequest.Description;
+            updatedListing.RentalPrice = modifyListingRequest.RentalPrice;
+            updatedListing.ListingTime = DateTime.Now;
+
+
+            myLesseeDBContext.Listings.Update(updatedListing);
+            await myLesseeDBContext.SaveChangesAsync();
+            return Ok("Updated");
+
+
+
+        }
+
+        [HttpDelete]
+        [Route("{id:int}")]
+        public async Task<IActionResult> DeleteListing([FromRoute] int id)
+        {
+            Listing listing = await myLesseeDBContext.Listings.FindAsync(id);
+            myLesseeDBContext.Listings.Remove(listing);
+            await myLesseeDBContext.SaveChangesAsync();
+            return Ok("Listing deleted");
+        }
 
     }
 }

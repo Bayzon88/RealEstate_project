@@ -76,6 +76,8 @@ namespace RealEstate_API.Controllers
 
         }
 
+        //TODO: Implement delete Account, only for Admin users 
+
 
     }
 }
