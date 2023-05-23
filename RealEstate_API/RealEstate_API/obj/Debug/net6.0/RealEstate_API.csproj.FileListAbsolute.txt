@@ -91,8 +91,5 @@ D:\Coding\VueJS\RealEstate_project\RealEstate_API\RealEstate_API\obj\Debug\net6.
 D:\Coding\VueJS\RealEstate_project\RealEstate_API\RealEstate_API\obj\Debug\net6.0\RealEstate_API.genruntimeconfig.cache
 D:\Coding\VueJS\RealEstate_project\RealEstate_API\RealEstate_API\obj\Debug\net6.0\ref\RealEstate_API.dll
 D:\Coding\VueJS\RealEstate_project\RealEstate_API\RealEstate_API\bin\Debug\net6.0\Microsoft.EntityFrameworkCore.InMemory.dll
-D:\Coding\VueJS\RealEstate_project\RealEstate_API\RealEstate_API\bin\Debug\net6.0\client\jsconfig.json
-D:\Coding\VueJS\RealEstate_project\RealEstate_API\RealEstate_API\bin\Debug\net6.0\client\package-lock.json
-D:\Coding\VueJS\RealEstate_project\RealEstate_API\RealEstate_API\bin\Debug\net6.0\client\package.json
 D:\Coding\VueJS\RealEstate_project\RealEstate_API\RealEstate_API\bin\Debug\net6.0\Microsoft.AspNetCore.SpaServices.Extensions.dll
 D:\Coding\VueJS\RealEstate_project\RealEstate_API\RealEstate_API\bin\Debug\net6.0\VueCliMiddleware.dll
