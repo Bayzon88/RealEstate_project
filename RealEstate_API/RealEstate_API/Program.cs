@@ -2,6 +2,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.EntityFrameworkCore;
 using RealEstate_API.Data;
 using VueCliMiddleware;
+using Microsoft.AspNetCore.Identity;
+using RealEstate_API.Models.Identity;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -14,40 +16,45 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddDbContext<MyLesseeDBContext>
     (options => options.UseSqlServer(builder.Configuration.GetConnectionString("MyLesseeDBContext")));
 
-//*********************** Single page application configuration for Vue.js ***********************
-builder.Services.AddSpaStaticFiles(configuration =>
+// Adding identity midleware 
+builder.Services.AddIdentity<Users, IdentityRole>(options =>
 {
-    configuration.RootPath = "client"; //Use static files from client(vuejs project)
+    options.Password.RequiredLength = 8;
+    options.Password.RequireNonAlphanumeric = false;
+    options.Password.RequireDigit = false;
+}).AddEntityFrameworkStores<MyLesseeDBContext>().AddDefaultTokenProviders();
+builder.Services.AddScoped<UserManager<Users>>();
+builder.Services.AddScoped<SignInManager<Users>>();
+builder.Services.AddScoped<JwtValidation>(); //JwtValidation
+
+//*********************** Allow CORS in development environment ***********************
+builder.Services.AddCors(options =>
+{
+    options.AddDefaultPolicy(builder =>
+    {
+        builder.WithOrigins("http://localhost:8080", "http://localhost:8081")
+               .AllowAnyMethod()
+         .AllowCredentials()
+               .AllowAnyHeader();
+    });
 });
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
+    app.UseCors();
     app.UseSwagger();
     app.UseSwaggerUI();
 
 }
 
-//Single page application configuration for Vue.js
-app.UseSpaStaticFiles();
-app.UseSpa(spa =>
-{
-    if (app.Environment.IsDevelopment())
-    {
-        spa.Options.SourcePath = "client/"; //Development folder
-    }
-    else
-    {
-        spa.Options.SourcePath = "dis"; //Production folder
-    }
 
-    if (app.Environment.IsDevelopment()) spa.UseVueCli(npmScript: "serve");//Vue.js script of package.json
-});
 
 app.UseHttpsRedirection();
 
 app.UseAuthorization();
+app.UseAuthentication();
 
 app.MapControllers();
 

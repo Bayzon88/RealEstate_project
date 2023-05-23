@@ -1,10 +1,14 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Azure.Identity;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using RealEstate_API.Data;
 using RealEstate_API.Models;
+using RealEstate_API.Models.Identity;
 using RealEstate_API.Models.RequestModels;
+using System.Diagnostics;
 
 namespace RealEstate_API.Controllers
 {
@@ -13,141 +17,64 @@ namespace RealEstate_API.Controllers
     [Route("api/[controller]")]
     public class AccountController : Controller
     {
-        private readonly MyLesseeDBContext myLesseeDBContext;
-        private UserManager<Account> accountManager;
-        private SignInManager<Account> signInManager;
-        public AccountController(MyLesseeDBContext myLesseeDBContext)
+
+        private UserManager<Users> userManager;
+        private SignInManager<Users> signInManager;
+        private JwtValidation jwtValidation;
+
+        public AccountController(UserManager<Users> userManager, SignInManager<Users> signInManager, JwtValidation jwtValidation)
         {
-            this.myLesseeDBContext = myLesseeDBContext;
+            this.userManager = userManager;
+            this.signInManager = signInManager;
+            this.jwtValidation = jwtValidation;
+
         }
-
-        [HttpGet(Name = "Alvaro")]
-        public IEnumerable<Account> Get()
+        [HttpGet]
+        public async Task<IActionResult> Get()
         {
-
             //Return all acounts whithin database
-            return myLesseeDBContext.Accounts.ToList();
-
-            //Another way to send the list as response could be using return type as IActionResult and sending the list as a parameter of Ok() function
+         var users = await userManager.Users.ToListAsync();
+            
+            return Ok(users);
 
         }
-        [HttpPost]
+
+        [HttpPost("signup")]
         public async Task<IActionResult> SignUp(SignUpRequest signUpRequest)
         {
             if (ModelState.IsValid)
             {
-                //Validate if user exists 
-                var emailIsInUse = myLesseeDBContext.Accounts.Where(user => user.Email == signUpRequest.Email).ToList().Count > 0;
-
-                if (!emailIsInUse) //user not registered yet
-                {
-
-                    //Create new account object
-                    var account = new Account()
-                    {
-                        AcctId = Guid.NewGuid(),
-                        Email = signUpRequest.Email,
-                        Password = signUpRequest.Password,
-                        Phone = signUpRequest.Phone,
-                        Name = signUpRequest.Name,
-                        Gender = signUpRequest.Gender,
-                        CreationTime = DateTime.Now,
-                        LastLoginTime = DateTime.Now
-
-                    };
-                    //Add to database, save and return status 200
-                    await myLesseeDBContext.AddAsync(account);
-                    await myLesseeDBContext.SaveChangesAsync();
-                    return Ok(account);
-
-                }
-                else
-                {
-                    return BadRequest("User Already exists");
-                }
-
+                //Create new User, uses identity framework
+                var user = new Users { UserName = signUpRequest.UserName, Email = signUpRequest.Email };
+                var result = await userManager.CreateAsync(user, signUpRequest.Password);
+                return Ok(result);
             }
             else
             {
-                return BadRequest();
+                return BadRequest("the model is not valid");
             }
-
-
-
         }
 
-
-        //TODO: Add authentication
-        [HttpPut]
-        public async Task<IActionResult> UpdateAccount(UpdateAccountRequest updateAccountRequest)
+        [HttpPost("login")]
+        public async Task<IActionResult> Login(LoginRequest loginRequest)
         {
-            if (ModelState.IsValid)
+            //Get user from Database
+            var result = await signInManager.PasswordSignInAsync(loginRequest.UserName, loginRequest.Password, isPersistent: true, lockoutOnFailure: false);
+            if (result.Succeeded)
             {
-                //Validate if user exists 
-                var userExists = myLesseeDBContext.Accounts.Where(user => user.Email == updateAccountRequest.Email).ToList().Count > 0;
-
-                if (userExists)
-                {
-
-                    //Create new account object
-                    var account = new Account()
-                    {
-
-                        Email = updateAccountRequest.Email,
-                        Password = updateAccountRequest.Password,
-                        Phone = updateAccountRequest.Phone,
-                        Name = updateAccountRequest.Name,
-                        Gender = updateAccountRequest.Gender,
-
-                    };
-                    //Add to database, save and return status 200
-                    await myLesseeDBContext.AddAsync(account);
-                    await myLesseeDBContext.SaveChangesAsync();
-                    return Ok(account);
-
-                }
-                else
-                {
-                    return BadRequest("User Already exists");
-                }
-
-
+                
+                var user = await userManager.FindByNameAsync(loginRequest.UserName);
+                //Return an authorization token 
+                var jwt = jwtValidation.createToken(user.Email); //Create a new jwt token
+                Response.Cookies.Append("jwtToken", jwt, new CookieOptions { HttpOnly = false });//Key: jwtToken
+                return Ok( new { message = "user authenticated and jwt token created"});
             }
             else
             {
-                return BadRequest();
+                return BadRequest("User Not Found");
             }
+
         }
-
-        //TODO: Add authentication
-        [HttpDelete]
-        public async Task<IActionResult> DeleteAccount(string email)
-        {
-            if (ModelState.IsValid)
-            {
-                var account = myLesseeDBContext.Accounts.Where(user => user.Email == email).ToList().First();
-
-                //Validate if user exists based on email
-                var userExists = myLesseeDBContext.Accounts.Where(user => user.Email == email).ToList().Count > 0;
-
-                if (userExists)
-                {
-                    myLesseeDBContext.Accounts.Remove(account);
-                    await myLesseeDBContext.SaveChangesAsync();
-                    return Ok();
-                }else
-                {
-                    return NotFound("User Not Found!");
-                }
-            }
-            else
-            {
-                return BadRequest();
-            }
-        }
-
-
-
 
 
     }

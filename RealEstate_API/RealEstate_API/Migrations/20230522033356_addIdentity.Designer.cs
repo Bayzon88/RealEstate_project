@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using RealEstate_API.Data;
 
@@ -11,9 +12,11 @@ using RealEstate_API.Data;
 namespace RealEstate_API.Migrations
 {
     [DbContext(typeof(MyLesseeDBContext))]
-    partial class MyLesseeDBContextModelSnapshot : ModelSnapshot
+    [Migration("20230522033356_addIdentity")]
+    partial class addIdentity
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -86,10 +89,6 @@ namespace RealEstate_API.Migrations
                         .IsConcurrencyToken()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Discriminator")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("Email")
                         .HasMaxLength(256)
                         .HasColumnType("nvarchar(256)");
@@ -141,10 +140,6 @@ namespace RealEstate_API.Migrations
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
 
                     b.ToTable("AspNetUsers", (string)null);
-
-                    b.HasDiscriminator<string>("Discriminator").HasValue("IdentityUser");
-
-                    b.UseTphMappingStrategy();
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
@@ -266,44 +261,44 @@ namespace RealEstate_API.Migrations
                     b.HasData(
                         new
                         {
-                            AcctId = new Guid("839dcf85-5dc8-4607-9842-441724357995"),
-                            CreationTime = new DateTime(2023, 5, 22, 0, 6, 39, 846, DateTimeKind.Local).AddTicks(5524),
+                            AcctId = new Guid("976ae5eb-2166-40aa-82a6-63413e5b0292"),
+                            CreationTime = new DateTime(2023, 5, 21, 23, 33, 55, 497, DateTimeKind.Local).AddTicks(8236),
                             Email = "beltranalvaro08@gmail.com",
                             Gender = "Male",
-                            LastLoginTime = new DateTime(2023, 5, 22, 0, 6, 39, 846, DateTimeKind.Local).AddTicks(5557),
+                            LastLoginTime = new DateTime(2023, 5, 21, 23, 33, 55, 497, DateTimeKind.Local).AddTicks(8286),
                             Name = "Alvaro Beltran",
                             Password = "alvaro1234",
                             Phone = 123456789L
                         },
                         new
                         {
-                            AcctId = new Guid("72b63d40-b7b1-4679-8950-ffc6f3981bac"),
-                            CreationTime = new DateTime(2023, 5, 22, 0, 6, 39, 846, DateTimeKind.Local).AddTicks(5560),
+                            AcctId = new Guid("26d89cb0-9548-4e70-b7ef-df3793197413"),
+                            CreationTime = new DateTime(2023, 5, 21, 23, 33, 55, 497, DateTimeKind.Local).AddTicks(8293),
                             Email = "tuyichen90@gmail.com",
                             Gender = "Female",
-                            LastLoginTime = new DateTime(2023, 5, 22, 0, 6, 39, 846, DateTimeKind.Local).AddTicks(5562),
+                            LastLoginTime = new DateTime(2023, 5, 21, 23, 33, 55, 497, DateTimeKind.Local).AddTicks(8295),
                             Name = "Tuyi Chen",
                             Password = "tuyi1234",
                             Phone = 123456789L
                         },
                         new
                         {
-                            AcctId = new Guid("d7772b51-0595-4fe4-8584-4577d269a032"),
-                            CreationTime = new DateTime(2023, 5, 22, 0, 6, 39, 846, DateTimeKind.Local).AddTicks(5565),
+                            AcctId = new Guid("acf3f13e-c66c-4da4-9589-d6bc5ef9b0d3"),
+                            CreationTime = new DateTime(2023, 5, 21, 23, 33, 55, 497, DateTimeKind.Local).AddTicks(8298),
                             Email = "katya.menesesr@gmail.com",
                             Gender = "Female",
-                            LastLoginTime = new DateTime(2023, 5, 22, 0, 6, 39, 846, DateTimeKind.Local).AddTicks(5566),
+                            LastLoginTime = new DateTime(2023, 5, 21, 23, 33, 55, 497, DateTimeKind.Local).AddTicks(8300),
                             Name = "Katya Meneses",
                             Password = "katya1234",
                             Phone = 123456789L
                         },
                         new
                         {
-                            AcctId = new Guid("405a3a92-6d4c-4a5b-842f-349e67dba7a7"),
-                            CreationTime = new DateTime(2023, 5, 22, 0, 6, 39, 846, DateTimeKind.Local).AddTicks(5569),
+                            AcctId = new Guid("f545fc5a-c424-43d4-84b5-ae1aa267918a"),
+                            CreationTime = new DateTime(2023, 5, 21, 23, 33, 55, 497, DateTimeKind.Local).AddTicks(8304),
                             Email = "antonvinokurov101@gmail.com",
                             Gender = "Male",
-                            LastLoginTime = new DateTime(2023, 5, 22, 0, 6, 39, 846, DateTimeKind.Local).AddTicks(5571),
+                            LastLoginTime = new DateTime(2023, 5, 21, 23, 33, 55, 497, DateTimeKind.Local).AddTicks(8306),
                             Name = "Anton Vinokurov",
                             Password = "anton1234",
                             Phone = 123456789L
@@ -435,7 +430,7 @@ namespace RealEstate_API.Migrations
                             Description = "Beautiful detached house with simple furniture provided",
                             HouseTypeId = 1,
                             LandlordId = 1,
-                            ListingTime = new DateTime(2023, 5, 22, 0, 6, 39, 846, DateTimeKind.Local).AddTicks(5725),
+                            ListingTime = new DateTime(2023, 5, 21, 23, 33, 55, 497, DateTimeKind.Local).AddTicks(8593),
                             ParkingNo = 3,
                             RentalPrice = 2400.0,
                             Status = true,
@@ -451,7 +446,7 @@ namespace RealEstate_API.Migrations
                             Description = "Beautiful semi-detached house with simple furniture provided",
                             HouseTypeId = 2,
                             LandlordId = 1,
-                            ListingTime = new DateTime(2023, 5, 22, 0, 6, 39, 846, DateTimeKind.Local).AddTicks(5729),
+                            ListingTime = new DateTime(2023, 5, 21, 23, 33, 55, 497, DateTimeKind.Local).AddTicks(8598),
                             ParkingNo = 2,
                             RentalPrice = 2300.0,
                             Status = true,
@@ -467,7 +462,7 @@ namespace RealEstate_API.Migrations
                             Description = "Beautiful townhouse with simple furniture provided",
                             HouseTypeId = 3,
                             LandlordId = 1,
-                            ListingTime = new DateTime(2023, 5, 22, 0, 6, 39, 846, DateTimeKind.Local).AddTicks(5732),
+                            ListingTime = new DateTime(2023, 5, 21, 23, 33, 55, 497, DateTimeKind.Local).AddTicks(8601),
                             ParkingNo = 2,
                             RentalPrice = 2300.0,
                             Status = true,
@@ -483,7 +478,7 @@ namespace RealEstate_API.Migrations
                             Description = "Beautiful Bungalow",
                             HouseTypeId = 4,
                             LandlordId = 1,
-                            ListingTime = new DateTime(2023, 5, 22, 0, 6, 39, 846, DateTimeKind.Local).AddTicks(5734),
+                            ListingTime = new DateTime(2023, 5, 21, 23, 33, 55, 497, DateTimeKind.Local).AddTicks(8604),
                             ParkingNo = 1,
                             RentalPrice = 2200.0,
                             Status = true,
@@ -499,7 +494,7 @@ namespace RealEstate_API.Migrations
                             Description = "Beautiful split-level House",
                             HouseTypeId = 5,
                             LandlordId = 1,
-                            ListingTime = new DateTime(2023, 5, 22, 0, 6, 39, 846, DateTimeKind.Local).AddTicks(5736),
+                            ListingTime = new DateTime(2023, 5, 21, 23, 33, 55, 497, DateTimeKind.Local).AddTicks(8607),
                             ParkingNo = 1,
                             RentalPrice = 2200.0,
                             Status = true,
@@ -515,7 +510,7 @@ namespace RealEstate_API.Migrations
                             Description = "Beautiful cottage with a small yard",
                             HouseTypeId = 6,
                             LandlordId = 1,
-                            ListingTime = new DateTime(2023, 5, 22, 0, 6, 39, 846, DateTimeKind.Local).AddTicks(5739),
+                            ListingTime = new DateTime(2023, 5, 21, 23, 33, 55, 497, DateTimeKind.Local).AddTicks(8611),
                             ParkingNo = 2,
                             RentalPrice = 2800.0,
                             Status = true,
@@ -531,7 +526,7 @@ namespace RealEstate_API.Migrations
                             Description = "Beautiful condominium with security",
                             HouseTypeId = 7,
                             LandlordId = 1,
-                            ListingTime = new DateTime(2023, 5, 22, 0, 6, 39, 846, DateTimeKind.Local).AddTicks(5741),
+                            ListingTime = new DateTime(2023, 5, 21, 23, 33, 55, 497, DateTimeKind.Local).AddTicks(8613),
                             ParkingNo = 1,
                             RentalPrice = 1800.0,
                             Status = true,
@@ -547,7 +542,7 @@ namespace RealEstate_API.Migrations
                             Description = "Beautiful apartment",
                             HouseTypeId = 8,
                             LandlordId = 1,
-                            ListingTime = new DateTime(2023, 5, 22, 0, 6, 39, 846, DateTimeKind.Local).AddTicks(5744),
+                            ListingTime = new DateTime(2023, 5, 21, 23, 33, 55, 497, DateTimeKind.Local).AddTicks(8616),
                             ParkingNo = 1,
                             RentalPrice = 1600.0,
                             Status = true,
@@ -563,7 +558,7 @@ namespace RealEstate_API.Migrations
                             Description = "Nothing special",
                             HouseTypeId = 9,
                             LandlordId = 1,
-                            ListingTime = new DateTime(2023, 5, 22, 0, 6, 39, 846, DateTimeKind.Local).AddTicks(5746),
+                            ListingTime = new DateTime(2023, 5, 21, 23, 33, 55, 497, DateTimeKind.Local).AddTicks(8619),
                             ParkingNo = 3,
                             RentalPrice = 2400.0,
                             Status = true,
@@ -571,13 +566,6 @@ namespace RealEstate_API.Migrations
                             ValidDays = 30,
                             WashroomNo = 5
                         });
-                });
-
-            modelBuilder.Entity("RealEstate_API.Models.Identity.Users", b =>
-                {
-                    b.HasBaseType("Microsoft.AspNetCore.Identity.IdentityUser");
-
-                    b.HasDiscriminator().HasValue("Users");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

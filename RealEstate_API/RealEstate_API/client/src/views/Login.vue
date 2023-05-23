@@ -17,15 +17,20 @@
           <input type="password" class="form-control" id="exampleInputPassword1" />
         </div>
 
-        <button type="submit" class="btn btn-primary login__loginForm--btnLogin">Submit</button>
+        <button type="submit" class="btn btn-primary login__loginForm--btnLogin w-100">
+          Submit
+        </button>
       </form>
+      <div class="container">
+        <button type="submit" class="btn btn-secondary my-4 w-100">Skip Login</button>
+      </div>
     </div>
   </div>
 </template>
 
 <script>
 export default {
-  name: "HelloWorld",
+  name: "LoginPage",
   props: {
     msg: String,
   },

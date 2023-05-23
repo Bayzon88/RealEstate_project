@@ -1,10 +1,12 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using RealEstate_API.Data;
 using RealEstate_API.Migrations;
 using RealEstate_API.Models;
+using RealEstate_API.Models.Identity;
 using RealEstate_API.Models.RequestModels;
 
 namespace RealEstate_API.Controllers
@@ -16,21 +18,31 @@ namespace RealEstate_API.Controllers
         private readonly MyLesseeDBContext myLesseeDBContext;
         private UserManager<Account> accountManager;
         private SignInManager<Account> signInManager;
-        public ListingController(MyLesseeDBContext myLesseeDBContext)
+        private JwtValidation jwtValidation;
+        public ListingController(MyLesseeDBContext myLesseeDBContext, JwtValidation jwtValidation)
         {
             this.myLesseeDBContext = myLesseeDBContext;
+            this.jwtValidation = jwtValidation;
         }
 
         [HttpGet]
 
         public async Task<IActionResult> Get()
         {
+            //Request cookie and check if user is logged in 
+            var jwt = Request.Cookies["jwtToken"]; //Cookie Name in AccountController/Login 
+            var token = jwtValidation.verifyToken(jwt);
+            var username = token.Issuer;
+
+            if (username == null) return BadRequest("User must be authenticated");
             //Show all Listings
+            
             return Ok(await myLesseeDBContext.Listings.ToListAsync());
         }
 
         [HttpGet]
         [Route("{id:int}")]
+   
         public async Task<IActionResult> ListingDetails([FromRoute] int id)
         {
             //Get information of Listing

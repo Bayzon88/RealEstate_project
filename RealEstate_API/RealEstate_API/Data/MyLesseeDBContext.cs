@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using static System.Net.Mime.MediaTypeNames;
 using System.Reflection;
 using RealEstate_API.Models;
+using RealEstate_API.Models.Identity;
 
 namespace RealEstate_API.Data
 {
@@ -21,6 +22,7 @@ namespace RealEstate_API.Data
         //public DbSet<Address> Addresses{ get; set; }
         //        public DbSet<Notification> Notifications { get; set; }
         public DbSet<Listing> Listings { get; set; }
+        public DbSet<Users> Users { get; set; }
 
         //        public DbSet<Message> Messages { get; set; }
         public DbSet<HouseType> HouseTypes { get; set; }

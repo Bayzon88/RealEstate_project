@@ -14,7 +14,7 @@ namespace RealEstate_API.Models.RequestModels
         [Required]
         public long Phone { get; set; }
         [Required]
-        public string Name { get; set; }
+        public string UserName { get; set; }
         [Required]
         public string Gender { get; set; }
 
